@@ -1,4 +1,4 @@
-# Pizza Builder Client
+# Pizza Builder Client 
 
 We want to build a pizza from a list of ingredients.  The Pizza will have a name,
 a description, and toppings.
