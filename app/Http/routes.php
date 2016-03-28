@@ -19,18 +19,18 @@ Route::group(['middleware' => ['web']], function () {
         return view('welcome');
     });
 
-//    List pizzas
-    Route::get('pizzas', 'PizzasController@index');
-//    Create  a pizza
-    Route::get('pizzas/create', 'PizzasController@create');
+    Route::group(['middleware' => 'auth'], function() {
+        // List pizzas
+        Route::get('pizzas{id}', 'PizzasController@index');
+        // Create  a pizza
+        Route::post('pizzas', 'PizzasController@create');
 
 
-//    List toppings
-    Route::get('toppings/{id}', 'ToppingsController@index');
-//  Create a topping
-    Route::post('toppings', 'ToppingsController@create');
-
-
+        // List toppings
+        Route::get('toppings/{id}', 'ToppingsController@index');
+        // Create a topping
+        Route::post('toppings', 'ToppingsController@create');
+    });
 
 });
 
