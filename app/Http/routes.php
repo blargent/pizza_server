@@ -12,19 +12,24 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
+    Route::auth();
+
 
     Route::get('/', function () {
         return view('welcome');
     });
 
-    // Authentication routes...
-    Route::get('login', 'Auth\AuthController@getLogin');
-    Route::post('login', 'Auth\AuthController@postLogin');
-    Route::get('logout', 'Auth\AuthController@getLogout');
+//    List pizzas
+    Route::get('pizzas', 'PizzasController@index');
+//    Create  a pizza
+    Route::get('pizzas/create', 'PizzasController@create');
 
-// Registration routes...
-    Route::get('register', 'Auth\AuthController@getRegister');
-    Route::post('register', 'Auth\AuthController@postRegister');
+
+//    List toppings
+    Route::get('toppings/{id}', 'ToppingsController@index');
+//  Create a topping
+    Route::post('toppings', 'ToppingsController@create');
+
 
 
 });

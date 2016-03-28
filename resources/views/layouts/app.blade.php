@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Lot Status Report</title>
+    <title>Pizza Server</title>
 
     <!-- Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
@@ -41,16 +41,11 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Lot Status Report
+                    Pizza Server Home
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                {{--<ul class="nav navbar-nav">--}}
-                    {{--<li><a href="{{ url('/home') }}">Home</a></li>--}}
-                {{--</ul>--}}
-
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
@@ -60,12 +55,11 @@
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                Reports <span class="caret"></span>
+                                Tasty Actions <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/') }}"><strike>old Report (not going to work)</strike></a></li>
-                                <li><a href="{{ url('/') }}"><strike>NEW  attempt, failed.</strike></a></li>
-                                <li><a href="{{ url('/reportv3') }}">NEW  attempt. Awesome. Pick me</a></li>
+                                <li><a href="{{ url('/pizzas') }}">Pizzas</a></li>
+                                <li><a href="{{ url('/toppings') }}">Toppings</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
