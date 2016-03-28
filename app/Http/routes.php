@@ -21,13 +21,13 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::group(['middleware' => 'auth'], function() {
         // List pizzas
-        Route::get('pizzas{id}', 'PizzasController@index');
+        Route::get('pizzas', 'PizzasController@index');
         // Create  a pizza
         Route::post('pizzas', 'PizzasController@create');
 
 
         // List toppings
-        Route::get('toppings/{id}', 'ToppingsController@index');
+        Route::get('toppings', 'ToppingsController@index');
         // Create a topping
         Route::post('toppings', 'ToppingsController@create');
     });

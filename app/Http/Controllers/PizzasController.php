@@ -8,5 +8,11 @@ use App\Http\Requests;
 
 class PizzasController extends Controller
 {
-    //
+    public function index() {
+
+    }
+
+    public function create() {
+
+    }
 }
