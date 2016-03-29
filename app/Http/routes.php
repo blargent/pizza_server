@@ -25,6 +25,9 @@ Route::group(['middleware' => ['web']], function () {
         // Create  a pizza
         Route::post('pizzas', 'PizzasController@create');
 
+        // List toppings associated with a pizza
+        Route::get('pizzas/{id}/toppings', 'PizzasController@showPizzaToppings');
+
 
         // List toppings
         Route::get('toppings', 'ToppingsController@index');
