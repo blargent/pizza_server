@@ -31,16 +31,11 @@ class PizzasController extends Controller
         $pizzas     = collect($pizzas);
 
 //        dd($pizzas);
+        $pizzas     = $pizzas->sortBy('name');
         $pizzas     = $pizzas->unique('name');
 
         return view('pizzas.show', compact('pizzas'));
 
-//        $request = new GuzzleHttp\Psr7\Request('GET', 'pizzas');
-//        $promise = $this->client->sendAsync($request)->then(function($response) {
-//            $gdata = json_decode($response->getBody());
-//            return view('pizzas.show', compact('gdata'));
-//        });
-//        $promise->wait();
     }
 
     /**
@@ -66,6 +61,7 @@ class PizzasController extends Controller
         $pizzaData      = null;
         $toppingData    = null;
         $cPizzaData     = null;
+        $allToppingData = null;
 
         $promise    = $client->sendAsync($pizzaRequest)->then(function($response) {
             $this->pizzaData = json_decode($response->getBody());
@@ -77,35 +73,65 @@ class PizzasController extends Controller
 
         $pizza['id']            = $realid;
         $pizza['name']          = $this->cPizzaData['name'];
-//        $pizza['name']          = $this->pizzaData[$id]->name;
         $pizza['description']   = $this->cPizzaData['description'];
-//        $pizza['description']   = $this->pizzaData[$id]->description;
-//        dd($pizza);
 
         $toppingClient  = new GuzzleHttp\Client(['base_uri' => $this->baseUri]);
         $toppingRequest = new GuzzleHttp\Psr7\Request('GET', 'pizzas/' .$id .'/toppings');
-
         $toppingPromise = $toppingClient->sendAsync($toppingRequest)->then(function($toppingResponse) {
            $this->toppingData = json_decode($toppingResponse->getBody());
         });
         $toppingPromise->wait();
 
-//        $this->toppingData = collect($this->toppingData);
-
-        $pizza['toppings']      = $this->toppingData;
 
 
-        return view('pizzas.showSelectedToppings', compact('pizza'));
-//        return view('pizzas.showSelectedToppings', compact('pToppings'));
-//        return view('pizzas.showSelectedToppings', compact('pToppings', 'name', $description));
-//        dd($pToppings);
+        $allToppingsClient  = new GuzzleHttp\Client(['base_uri' => $this->baseUri]);
+        $allToppingsRequest = new GuzzleHttp\Psr7\Request('GET', 'toppings');
+        $allToppingPromise  = $allToppingsClient->sendAsync($allToppingsRequest)->then(function($allToppingResponse) {
+           $this->allToppingData = json_decode($allToppingResponse->getBody());
+        });
+        $allToppingPromise->wait();
 
-//        dd(json_decode($request->getBody()));
-//        $request = new GuzzleHttp\Psr7\Request('GET', 'pizzas/' .$id .'/toppings');
 
+        $this->allToppingData = collect($this->allToppingData);
+
+        $usedtoppingids = collect($this->toppingData);
+        $used = $usedtoppingids->pluck('topping_id');
+        $used = $used->values();
+
+        $remainingToppings = $this->allToppingData->pluck('id');
+        $remainingToppings->values();
+        $remainingToppings->flatten();
+
+        $diffToppings = $remainingToppings->diff($used);
+
+        $manualToppingPile = null;
+
+        $diffToppings->each(function($topping, $key) {
+            $this->manualToppingPile[$topping] = $this->allToppingData->where('id', $topping);
+        });
+
+        $pizza['manualtoppingpile'] = $this->manualToppingPile;
+        
+
+//        $muddledToppings = $this->allToppingData->reject(function ($tdata) {
+//           return $tdata->id whereIn('id', $used);
+//        });
+
+//        $pizza['muddledtoppings']   = $muddledToppings;
+
+        $pizza['usedtoppingids']    = $used;
+        $pizza['diffToppings']      = $diffToppings;
+        $pizza['remainingToppings'] = $remainingToppings;
+//        $pizza['ftoppings']         = $ftoppings;
+        $pizza['allToppings']       = $this->allToppingData;
+        $pizza['toppings']          = $this->toppingData;
+        $pizza['tcount']            = count($this->toppingData);
+        dd($pizza);
+
+        return view('pizzas.showSelectedToppings', compact('pizza', 'availableToppings'));
     }
 
-    public function addToppingToPizza($id, $toppingId) {
+    public function addToppingsToPizza($id, $toppings) {
 
     }
 
