@@ -29,6 +29,8 @@ class PizzasController extends Controller
 //        $res    = $this->client->request('GET', 'pizzas');
         $pizzas     = json_decode($res->getBody());
         $pizzas     = collect($pizzas);
+
+//        dd($pizzas);
         $pizzas     = $pizzas->unique('name');
 
         return view('pizzas.show', compact('pizzas'));
@@ -56,23 +58,29 @@ class PizzasController extends Controller
      */
 //    public function showPizzaToppings($id, $name, $description) {
     public function showPizzaToppings($id) {
+        // stupid index 1 offset from api :-p
+        $realid = $id-1;
         $client          = new GuzzleHttp\Client(['base_uri' => $this->baseUri]);
         $pizzaRequest    = new GuzzleHttp\Psr7\Request('GET', 'pizzas');
 
         $pizzaData      = null;
         $toppingData    = null;
+        $cPizzaData     = null;
 
         $promise    = $client->sendAsync($pizzaRequest)->then(function($response) {
             $this->pizzaData = json_decode($response->getBody());
         });
         $promise->wait();
 
-        $this->pizzaData = collect($this->pizzaData);
+        $this->cPizzaData = collect($this->pizzaData[$realid]);
+//        dd($this->cPizzaData);
 
-        $pizza['id']            = $id;
-        $pizza['name']          = $this->pizzaData[$id]->name;
-        $pizza['description']   = $this->pizzaData[$id]->description;
-
+        $pizza['id']            = $realid;
+        $pizza['name']          = $this->cPizzaData['name'];
+//        $pizza['name']          = $this->pizzaData[$id]->name;
+        $pizza['description']   = $this->cPizzaData['description'];
+//        $pizza['description']   = $this->pizzaData[$id]->description;
+//        dd($pizza);
 
         $toppingClient  = new GuzzleHttp\Client(['base_uri' => $this->baseUri]);
         $toppingRequest = new GuzzleHttp\Psr7\Request('GET', 'pizzas/' .$id .'/toppings');
