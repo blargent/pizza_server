@@ -26,11 +26,9 @@ class PizzasController extends Controller
     public function index() {
         $client = new GuzzleHttp\Client();
         $res    = $client->request('GET', 'https://pizzaserver.herokuapp.com/pizzas');
-//        $res    = $this->client->request('GET', 'pizzas');
         $pizzas     = json_decode($res->getBody());
         $pizzas     = collect($pizzas);
 
-//        dd($pizzas);
         $pizzas     = $pizzas->sortBy('name');
         $pizzas     = $pizzas->unique('name');
 
@@ -69,9 +67,8 @@ class PizzasController extends Controller
         $promise->wait();
 
         $this->cPizzaData = collect($this->pizzaData[$realid]);
-//        dd($this->cPizzaData);
 
-        $pizza['id']            = $realid;
+        $pizza['id']            = $id;
         $pizza['name']          = $this->cPizzaData['name'];
         $pizza['description']   = $this->cPizzaData['description'];
 
@@ -110,29 +107,33 @@ class PizzasController extends Controller
             $this->manualToppingPile[$topping] = $this->allToppingData->where('id', $topping);
         });
 
-        $pizza['manualtoppingpile'] = $this->manualToppingPile;
-        
-
-//        $muddledToppings = $this->allToppingData->reject(function ($tdata) {
-//           return $tdata->id whereIn('id', $used);
-//        });
-
-//        $pizza['muddledtoppings']   = $muddledToppings;
+        $availableToppings = collect($this->manualToppingPile)->flatten();
 
         $pizza['usedtoppingids']    = $used;
         $pizza['diffToppings']      = $diffToppings;
         $pizza['remainingToppings'] = $remainingToppings;
-//        $pizza['ftoppings']         = $ftoppings;
         $pizza['allToppings']       = $this->allToppingData;
         $pizza['toppings']          = $this->toppingData;
         $pizza['tcount']            = count($this->toppingData);
-        dd($pizza);
 
         return view('pizzas.showSelectedToppings', compact('pizza', 'availableToppings'));
     }
 
-    public function addToppingsToPizza($id, $toppings) {
+    public function addToppingsToPizza($id, Request $request) {
+        // stupid offset index
+        $realid = $id+1;
 
+        $addToppingToPizzaUri = $this->baseUri .'pizzas/' .$id .'/toppings';
+
+        $toppingToAddUri = collect(array("topping_id" => $request->selected_topping));
+
+        $client = new GuzzleHttp\Client();
+        $result = $client->request('POST', $addToppingToPizzaUri, [
+           'json' => ["topping_id" => $request->selected_topping]
+        ]);
+
+//        curl -H "Content-Type: application/json" -H "Accept: application/json" https://pizzaserver.herokuapp.com/pizzas/91/toppings --data '{"topping_id": 41}'
+        return redirect()->back();
     }
 
     public function create() {

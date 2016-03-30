@@ -6,7 +6,7 @@
 
     <br>
         @if ($pizza['tcount'] > 0)
-            <p>This pizza has the following toppings applied to it. You may click to add toppings from the available list or create new toppings here</p>
+            <p>This pizza has the following toppings applied to it.</p><p> You may click to add toppings from the available radio button list or <a href="">create new toppings here</a></p>
         @else
             <p>This pizza has no toppings applied. So sad. You may select some toppings from the ones listed bleow or create new toppings here.</p>
         @endif
@@ -21,9 +21,21 @@
         @endforeach
     </ul>
 
-    <form>
-    <div class="form-group">
-
-    </div>
+    <form id="pizzaForm" method="POST" action="{{ URL::to('/pizzas/' .$pizza['id'] .'/toppings') }}">
+        <div class="form-group">
+            @foreach($availableToppings as $availableTopping)
+                <input type="radio" name="selected_topping" value="{{ $availableTopping->id }}"> {{ $availableTopping->name }}
+                {{--<div class="checkbox">--}}
+                {{--{!! Form::checkbox('topping_selected[]', $availableTopping->id) !!}--}}
+                {{--{!! $availableTopping->name !!}--}}
+                {{--<input name="topping" type="checkbox" value="1" id="{{ $availableTopping->id }}"> {{ $availableTopping->name }}--}}
+                    {{--{!! Form::checkbox('items[]', $availableTopping->id) !!}}--}}
+                {{--</div>--}}
+            @endforeach
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add a topping (this demo states "a" singular)</button>
+        </div>
+        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
     </form>
 @stop

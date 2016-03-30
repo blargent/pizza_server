@@ -29,7 +29,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('pizzas/{id}/toppings', 'PizzasController@showPizzaToppings');
 
         // Add a topping to a pizza
-        Route::post('pizzas/{id}/toppings', 'PizzaController@addToppingToPizza');
+        Route::post('pizzas/{id}/toppings', 'PizzasController@addToppingsToPizza');
 
 
         // List toppings
