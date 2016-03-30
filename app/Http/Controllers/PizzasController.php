@@ -131,7 +131,18 @@ class PizzasController extends Controller
         return redirect()->back();
     }
 
-    public function create() {
+    public function create(Request $request) {
+        $client = new GuzzleHttp\Client();
 
+        $result = $client->request('POST', $this->baseUri .'/pizzas', [
+            'json' => ["pizza" => [
+                            "name"          => $request->pizza_name,
+                            "description"   => $request->pizza_description
+            ]]
+        ]);
+
+
+//        curl -H "Content-Type: application/json" -H "Accept: application/json" https://pizzaserver.herokuapp.com/pizzas/91/toppings --data '{"topping_id": 41}'
+        return redirect()->back();
     }
 }

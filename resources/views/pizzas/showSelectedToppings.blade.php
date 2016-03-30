@@ -6,7 +6,7 @@
 
     <br>
         @if ($pizza['tcount'] > 0)
-            <p>This pizza has the following toppings applied to it.</p><p> You may click to add toppings from the available radio button list or <a href="">create new toppings here</a></p>
+            <p>This pizza has the following toppings applied to it.</p><p> You may click to add toppings from the available radio button list or <a href="{{ URL::to('/toppings') }}">create new toppings here</a></p>
         @else
             <p>This pizza has no toppings applied. So sad. You may select some toppings from the ones listed bleow or create new toppings here.</p>
         @endif

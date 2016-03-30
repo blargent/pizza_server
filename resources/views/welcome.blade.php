@@ -12,7 +12,7 @@
                             <p>Hello, please proceed to the <a href="{{ url('/pizzas') }}">Pizza Page</a>. You will need to login first.</p>
                         @else
                             <p>You are now logged in.</p>
-                            <p>Please proceed to the <a href="{{ url('/pizzas') }}">Pizza Page</a>, or the <a href="{{ url('/pizzas') }}">Toppings Page</a></p>
+                            <p>Please proceed to the <a href="{{ url('/pizzas') }}">Pizza Page</a>, or the <a href="{{ url('/toppings') }}">Toppings Page</a></p>
                         @endif
                     </div>
                 </div>

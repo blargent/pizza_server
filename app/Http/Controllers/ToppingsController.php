@@ -24,7 +24,6 @@ class ToppingsController extends Controller
         $toppings     = json_decode($res->getBody());
         $toppings     = collect($toppings);
         $toppings     = $toppings->sortBy('name');
-//        $toppings     = $toppings->unique('name');
 
         return view('toppings.show', compact('toppings'));
     }

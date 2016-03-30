@@ -27,8 +27,8 @@
     </style>
 </head>
 <body id="app-layout">
+<div class="container">
     <nav class="navbar navbar-default">
-        <div class="container">
             <div class="navbar-header">
 
                 <!-- Collapsed Hamburger -->
@@ -74,10 +74,12 @@
                     @endif
                 </ul>
             </div>
-        </div>
     </nav>
 
+
     @yield('content')
+
+</div>
 
     <!-- JavaScripts -->
     <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
