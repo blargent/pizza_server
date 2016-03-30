@@ -35,7 +35,7 @@ Route::group(['middleware' => ['web']], function () {
         // List toppings
         Route::get('toppings', 'ToppingsController@index');
         // Create a topping
-        Route::post('toppings', 'ToppingsController@create');
+        Route::post('toppings', 'ToppingsController@createTopping');
     });
 
 });

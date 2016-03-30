@@ -87,8 +87,6 @@ class PizzasController extends Controller
            $this->allToppingData = json_decode($allToppingResponse->getBody());
         });
         $allToppingPromise->wait();
-
-
         $this->allToppingData = collect($this->allToppingData);
 
         $usedtoppingids = collect($this->toppingData);
@@ -100,9 +98,6 @@ class PizzasController extends Controller
         $remainingToppings->flatten();
 
         $diffToppings = $remainingToppings->diff($used);
-
-        $manualToppingPile = null;
-
         $diffToppings->each(function($topping, $key) {
             $this->manualToppingPile[$topping] = $this->allToppingData->where('id', $topping);
         });
