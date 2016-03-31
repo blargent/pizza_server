@@ -38,6 +38,7 @@ class PizzasController extends Controller
 
     /**
      * @param $id
+     * @return mixed
      *
      * The /pizzas/{pizza_id_slug}/toppings endpoint should return the toppings for the
      * specified pizza.
@@ -49,7 +50,6 @@ class PizzasController extends Controller
      *   Pizza   -> hasMany('App\Toppings')    and
      *   Topping -> belongsTo('App\Pizza')  (or belongsToMany).
      */
-//    public function showPizzaToppings($id, $name, $description) {
     public function showPizzaToppings($id) {
         // stupid index 1 offset from api :-p
         $realid = $id-1;
@@ -114,6 +114,11 @@ class PizzasController extends Controller
         return view('pizzas.showSelectedToppings', compact('pizza', 'availableToppings'));
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
     public function addToppingsToPizza($id, Request $request) {
         // stupid offset index
         $realid = $id+1;
@@ -131,6 +136,10 @@ class PizzasController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function create(Request $request) {
         $client = new GuzzleHttp\Client();
 
